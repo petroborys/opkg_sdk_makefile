@@ -4,11 +4,11 @@ include $(TOPDIR)/rules.mk
 # The name and version of your package are used to define the variable to point to the build directory of your package: $(PKG_BUILD_DIR)
 PKG_NAME:=toolsense_owrt
 PKG_VERSION:=1.0
-PKG_RELEASE:=7
+PKG_RELEASE:=3
 
 # Source settings (i.e. where to find the source codes)
 # This is a custom variable, used below
-SOURCE_DIR:=/home/vagrant/buildbot/toolsense_owrt
+SOURCE_DIR:=/home/vagrant/buildbot/toolsense_owrt/
 PKG_BUILD_DEPENDS:=libmosquitto
 
 include $(INCLUDE_DIR)/package.mk
@@ -37,7 +37,8 @@ endef
 # Package build instructions; invoke the target-specific compiler to first compile the source file, and then to link the file into the final executable
 define Build/Compile
 		$(TARGET_CC) $(TARGET_CFLAGS) -o $(PKG_BUILD_DIR)/toolsense_owrt.o -c $(PKG_BUILD_DIR)/toolsense_owrt.c
-		$(TARGET_CC) $(TARGET_LDFLAGS) -o $(PKG_BUILD_DIR)/$1 $(PKG_BUILD_DIR)/toolsense_owrt.o -lmosquitto
+		$(TARGET_CC) $(TARGET_CFLAGS) -o $(PKG_BUILD_DIR)/functions.o -c $(PKG_BUILD_DIR)/functions.c
+		$(TARGET_CC) $(TARGET_LDFLAGS) -o $(PKG_BUILD_DIR)/$1 $(PKG_BUILD_DIR)/toolsense_owrt.o $(PKG_BUILD_DIR)/functions.o -lmosquitto
 endef
 
 # Package install instructions; create a directory inside the package to hold our executable, and then copy the executable we built previously into the folder
